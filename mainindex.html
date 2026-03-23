@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Card Website</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(270deg, #ff6ec4, #7873f5, #4facfe, #43e97b);
+    background-size:800% 800%;
+    animation:bgMove 12s infinite linear;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    height:200px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+    transition:0.4s;
+    box-shadow:0 8px 25px rgba(0,0,0,0.2);
+}
+
+.card:hover{
+    transform:scale(1.08);
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+}
+
+@media(max-width:600px){
+    .card{
+        height:160px;
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card" onclick="openSite('https://cssbuttonlab.streamlit.app/')">
+        Button.css 
+    </div>
+
+    <div class="card" onclick="openSite('https://cssvisuallabs.streamlit.app/')">
+        Card.css 
+    </div>
+
+    
+    <div class="card" onclick="openSite('https://piechartlab.streamlit.app/')">
+        PieChart.css
+    </div>
+
+
+    
+
+</div>
+
+<script>
+function openSite(url){
+    window.location.href = url;
+}
+</script>
+
+</body>
+</html>

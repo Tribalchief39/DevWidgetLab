@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Widget Lab</title>
+
+<style>
+
+/* ---------- BODY ---------- */
+body{
+    margin:0;
+    height:100vh;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ---------- LOGO ---------- */
+.logo{
+    width:280px;
+    max-width:80%;
+    margin-bottom:50px;
+}
+
+/* ---------- TOGGLE BUTTON ---------- */
+.toggle{
+    position:relative;
+    width:130px;
+    height:55px;
+    background:#111;
+    border-radius:50px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.4s;
+    box-shadow:0 0 15px rgba(130,0,255,0.4);
+}
+
+/* circle */
+.toggle::before{
+    content:"";
+    position:absolute;
+    width:45px;
+    height:45px;
+    background:linear-gradient(45deg,#7c3aed,#a855f7);
+    border-radius:50%;
+    left:5px;
+    transition:0.4s;
+}
+
+/* text */
+.toggle span{
+    position:relative;
+    color:white;
+    font-weight:bold;
+    letter-spacing:1px;
+    z-index:2;
+}
+
+/* active state */
+.toggle.active::before{
+    left:80px;
+}
+
+/* glow when clicked */
+.toggle.active{
+    box-shadow:0 0 25px rgba(140,0,255,0.8);
+    transform:scale(1.05);
+}
+
+/* MOBILE */
+@media(max-width:600px){
+    .logo{
+        width:200px;
+        margin-bottom:40px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<!-- LOGO -->
+<img src="Black White Minimal Professional Corporate Business Logo.png" class="logo" alt="Dev Widget Lab Logo">
+
+<!-- TOGGLE BUTTON -->
+<div class="toggle" id="startToggle">
+    <span>START</span>
+</div>
+
+<script>
+
+const toggle = document.getElementById("startToggle");
+
+toggle.addEventListener("click", function(){
+    toggle.classList.add("active");
+
+    setTimeout(()=>{
+        window.location.href = "login.html";
+    },700);
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Login System</title>
+  
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="container">
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+  <div></div>
+</div>
+
+<div class="card">
+  <div class="card2">
+    <form class="form" id="authForm">
+      <p id="heading">Login</p>
+
+      <div class="field">
+        <input
+          type="text"
+          class="input-field"
+          id="username"
+          placeholder="Username"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <input
+          type="password"
+          class="input-field"
+          id="password"
+          placeholder="Password"  
+          required
+        />
+      </div>
+
+      <div class="btn">
+        <button type="submit" class="button1">Login</button>
+        <button type="button" class="button2" onclick="register()">Sign Up</button>
+      </div>
+
+      <button type="button" class="button3" onclick="forgotPassword()">Forgot Password</button>
+
+      <p id="message" style="color:white;text-align:center;"></p>
+
+    </form>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById("authForm");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const storedUser = localStorage.getItem("username");
+  const storedPass = localStorage.getItem("password");
+
+  if(username === storedUser && password === storedPass){
+    document.getElementById("message").innerText = "Login Successful! Redirecting...";
+    
+    
+    setTimeout(() => {
+      window.location.href = "loader.html";
+    }, 1000);
+
+  } else {
+    document.getElementById("message").innerText = "Invalid Credentials!";
+  }
+});
+
+function register(){
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if(username === "" || password === ""){
+    document.getElementById("message").innerText = "Fill all fields!";
+    return;
+  }
+
+  localStorage.setItem("username", username);
+  localStorage.setItem("password", password);
+
+  document.getElementById("message").innerText = "Registered Successfully!";
+}
+
+function forgotPassword(){
+  const storedPass = localStorage.getItem("password");
+  if(storedPass){
+    alert("Your password is: " + storedPass);
+  } else {
+    alert("No user registered!");
+  }
+}
+</script>
+
+</body>
+</html> 
+
+
+ -->
+
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Login System</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="login.css">
+
+</head>
+
+<body>
+
+
+<canvas id="bg"></canvas>
+
+
+
+<div class="card">
+  <div class="card2">
+    <form class="form" id="authForm">
+
+      <p id="heading">Login</p>
+
+      <div class="field">
+        <input type="text" class="input-field" id="username" placeholder="Username" required>
+      </div>
+
+      <div class="field">
+        <input type="password" class="input-field" id="password" placeholder="Password" required>
+      </div>
+
+      <div class="btn">
+        <button type="submit">Login</button>
+        <button type="button" onclick="register()">Sign Up</button>
+      </div>
+
+      <button type="button" onclick="forgotPassword()">Forgot Password</button>
+
+      <p id="message"></p>
+
+    </form>
+  </div>
+</div>
+
+<script>
+
+/* LOGIN SYSTEM */
+const form = document.getElementById("authForm");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const storedUser = localStorage.getItem("username");
+  const storedPass = localStorage.getItem("password");
+
+  if(username === storedUser && password === storedPass){
+    document.getElementById("message").innerText = "Login Successful! Redirecting...";
+    
+    setTimeout(() => {
+      window.location.href = "loader.html";
+    }, 1000);
+
+  } else {
+    document.getElementById("message").innerText = "Invalid Credentials!";
+  }
+});
+
+/* REGISTER */
+function register(){
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if(username === "" || password === ""){
+    document.getElementById("message").innerText = "Fill all fields!";
+    return;
+  }
+
+  localStorage.setItem("username", username);
+  localStorage.setItem("password", password);
+
+  document.getElementById("message").innerText = "Registered Successfully!";
+}
+
+/* FORGOT PASSWORD */
+function forgotPassword(){
+  const storedPass = localStorage.getItem("password");
+  if(storedPass){
+    alert("Your password is: " + storedPass);
+  } else {
+    alert("No user registered!");
+  }
+}
+
+/* PARTICLE BACKGROUND */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    size:Math.random()*2,
+    speedX:(Math.random()-0.5)*0.5,
+    speedY:(Math.random()-0.5)*0.5
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.speedX;
+    p.y+=p.speedY;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+</script>
+
+</body>
+</html>
