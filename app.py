@@ -23,22 +23,36 @@ hero_text = st.sidebar.text_input("Hero Text", "Big Sale 🔥")
 card_bg = st.sidebar.color_picker("Card BG", "#ffffff")
 
 # ---------------------------
-# SECTION BUILDER
+# SECTION BUILDER (FIXED)
 # ---------------------------
 st.sidebar.subheader("🧩 Sections")
 
 new_sections = []
+
 for i, sec in enumerate(st.session_state.sections):
     col1, col2, col3, col4 = st.sidebar.columns([3,1,1,1])
 
     new_val = col1.text_input(f"Section {i}", sec, key=f"sec_{i}")
-    
-    if col2.button("↑", key=f"up_{i}") and i > 0:
-        st.session_state.sections[i], st.session_state.sections[i-1] = st.session_state.sections[i-1], st.session_state.sections[i]
-    
-    if col3.button("↓", key=f"down_{i}") and i < len(st.session_state.sections)-1:
-        st.session_state.sections[i], st.session_state.sections[i+1] = st.session_state.sections[i+1], st.session_state.sections[i]
-    
+
+    # 🔼 MOVE UP
+    if col2.button("↑", key=f"up_{i}"):
+        if i > 0:
+            st.session_state.sections[i], st.session_state.sections[i-1] = (
+                st.session_state.sections[i-1],
+                st.session_state.sections[i]
+            )
+            st.rerun()
+
+    # 🔽 MOVE DOWN
+    if col3.button("↓", key=f"down_{i}"):
+        if i < len(st.session_state.sections) - 1:
+            st.session_state.sections[i], st.session_state.sections[i+1] = (
+                st.session_state.sections[i+1],
+                st.session_state.sections[i]
+            )
+            st.rerun()
+
+    # ❌ DELETE
     if col4.button("❌", key=f"del_{i}"):
         st.session_state.sections.pop(i)
         st.rerun()
@@ -83,12 +97,12 @@ html_code = f"""
 <html>
 <body style="margin:0;font-family:sans-serif;background:#eaeded;">
 
-<div style="background:{nav_bg};color:{nav_text};padding:10px;display:flex;gap:15px;">
+<div style="background:{nav_bg};color:{nav_text};padding:10px;display:flex;gap:15px;align-items:center;">
 <b>DevWidget Lab</b>
 
 <div style="flex:1;display:flex;">
 <input placeholder="{search_text}" style="flex:1;padding:8px;">
-<button style="background:{btn_color};padding:8px;">🔍</button>
+<button style="background:{btn_color};padding:8px;border:none;">🔍</button>
 </div>
 
 <div>Account</div>
