@@ -12,7 +12,7 @@ if "sections" not in st.session_state:
 # ---------------------------
 # SIDEBAR CONTROLS
 # ---------------------------
-st.sidebar.title("⚡ DevWidget Lab")
+st.sidebar.title("DevWidget Lab")
 
 cols = st.sidebar.slider("Columns", 2, 6, 4)
 nav_bg = st.sidebar.color_picker("Navbar BG", "#131921")
