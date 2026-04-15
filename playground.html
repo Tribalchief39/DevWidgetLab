@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DevWidget Lab</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+    transition:all 0.25s ease;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    padding:12px;
+    gap:12px;
+}
+
+/* LEFT PANEL */
+.left{
+    width:300px;
+    padding:20px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(25px);
+    color:white;
+    overflow:auto;
+    border-radius:20px;
+}
+
+/* CONTROLS */
+.control{
+    margin-bottom:15px;
+    padding:10px;
+    border-radius:12px;
+}
+
+.control:hover{
+    background:rgba(255,255,255,0.08);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+    border-radius:12px;
+    border:none;
+    background:rgba(255,255,255,0.1);
+    color:white;
+}
+
+/* BUTTON */
+button{
+    padding:8px 10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#38bdf8;
+    color:white;
+}
+
+/* RIGHT */
+.right{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* PREVIEW */
+.preview-box{
+    height:75%;
+    border-radius:20px;
+    overflow:auto;
+    background:#eaeded;
+}
+
+/* SEARCH */
+.search{
+    flex:1;
+    display:flex;
+    height:40px;
+}
+
+.search input{
+    flex:1;
+    height:100%;
+    padding:0 10px;
+    border-radius:8px 0 0 8px;
+}
+
+.search button{
+    height:100%;
+    padding:0 16px;
+    border-radius:0 8px 8px 0;
+}
+
+/* NAV */
+.navbar{
+    display:flex;
+    gap:15px;
+    padding:10px;
+    align-items:center;
+}
+
+/* HERO */
+.hero{height:300px;position:relative;}
+.hero img{width:100%;height:100%;object-fit:cover;}
+.heroText{
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    color:white;
+    font-size:28px;
+}
+
+/* SECTION */
+.section{
+    margin:20px;
+    background:white;
+    padding:15px;
+    border-radius:16px;
+}
+
+/* PRODUCTS */
+.products{
+    display:grid;
+    gap:15px;
+}
+
+.card{
+    padding:10px;
+    border-radius:14px;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+/* CODE */
+.code-section{
+    height:25%;
+    display:flex;
+    gap:10px;
+}
+
+textarea{
+    width:100%;
+    height:100%;
+    border:none;
+    border-radius:12px;
+    padding:10px;
+    background:#020617;
+    color:#38bdf8;
+}
+
+.code-box{flex:1;}
+</style>
+</head>
+
+<body>
+
+<!-- LEFT -->
+<div class="left">
+
+<h2>⚡ DevWidget</h2>
+
+<div class="control">
+<label>Columns</label>
+<input type="range" id="cols" min="2" max="6" value="4">
+</div>
+
+<div class="control">
+<label>Navbar BG</label>
+<input type="color" id="navBg" value="#131921">
+</div>
+
+<div class="control">
+<label>Navbar Text</label>
+<input type="color" id="navText" value="#ffffff">
+</div>
+
+<div class="control">
+<label>Search Text</label>
+<input type="text" id="searchText" value="Search DevWidget">
+</div>
+
+<div class="control">
+<label>Button Color</label>
+<input type="color" id="btnColor" value="#febd69">
+</div>
+
+<div class="control">
+<label>Hero Text</label>
+<input type="text" id="heroText" value="Big Sale 🔥">
+</div>
+
+<div class="control">
+<label>Card BG</label>
+<input type="color" id="cardBg" value="#ffffff">
+</div>
+
+<!-- SECTION BUILDER -->
+<div class="control">
+<label>Sections</label>
+<div id="sectionList"></div>
+<button onclick="addSection()">➕ Add Section</button>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<div class="preview-box">
+<div id="preview"></div>
+</div>
+
+<div class="code-section">
+<div class="code-box"><textarea id="htmlCode"></textarea></div>
+<div class="code-box"><textarea id="cssCode"></textarea></div>
+<div class="code-box"><textarea id="jsCode"></textarea></div>
+</div>
+
+</div>
+
+<script>
+
+let sectionsData = ["Deals","Electronics"];
+
+function renderSectionControls(){
+    let html="";
+    sectionsData.forEach((sec,i)=>{
+        html+=`
+        <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <input value="${sec}" oninput="updateSection(${i},this.value)">
+            <button onclick="moveUp(${i})">↑</button>
+            <button onclick="moveDown(${i})">↓</button>
+            <button onclick="deleteSection(${i})">✖</button>
+        </div>`;
+    });
+    document.getElementById("sectionList").innerHTML=html;
+}
+
+function addSection(){
+    sectionsData.push("New Section");
+    renderSectionControls();
+    update();
+}
+
+function deleteSection(i){
+    sectionsData.splice(i,1);
+    renderSectionControls();
+    update();
+}
+
+function moveUp(i){
+    if(i===0) return;
+    [sectionsData[i],sectionsData[i-1]]=[sectionsData[i-1],sectionsData[i]];
+    renderSectionControls();
+    update();
+}
+
+function moveDown(i){
+    if(i===sectionsData.length-1) return;
+    [sectionsData[i],sectionsData[i+1]]=[sectionsData[i+1],sectionsData[i]];
+    renderSectionControls();
+    update();
+}
+
+function updateSection(i,val){
+    sectionsData[i]=val;
+    update();
+}
+
+/* SLIDER */
+let images=[
+"https://picsum.photos/1200/300?1",
+"https://picsum.photos/1200/300?2",
+"https://picsum.photos/1200/300?3"
+];
+
+let index=0;
+setInterval(()=>{
+    index=(index+1)%images.length;
+    let img=document.getElementById("heroImg");
+    if(img) img.src=images[index];
+},3000);
+
+/* PRODUCTS */
+function products(cols,cardBg){
+    let html=`<div class="products" style="grid-template-columns:repeat(${cols},1fr)">`;
+    for(let i=1;i<=8;i++){
+        html+=`
+        <div class="card" style="background:${cardBg}">
+            <img src="https://picsum.photos/200?${i}">
+            <p>Product ${i}</p>
+            <div>₹${Math.floor(Math.random()*1000)}</div>
+        </div>`;
+    }
+    return html+"</div>";
+}
+
+/* UPDATE */
+function update(){
+
+let cols=colsEl.value;
+let navBg=navBgEl.value;
+let navText=navTextEl.value;
+let searchText=searchTextEl.value;
+let btnColor=btnColorEl.value;
+let heroText=heroTextEl.value;
+let cardBg=cardBgEl.value;
+
+let sectionsHTML=sectionsData.map(s=>`
+<div class="section">
+<h2>${s}</h2>
+${products(cols,cardBg)}
+</div>
+`).join("");
+
+let html=`
+<div>
+
+<div class="navbar" style="background:${navBg};color:${navText}">
+<div>DevWidget Lab</div>
+
+<div class="search">
+<input placeholder="${searchText}">
+<button style="background:${btnColor}">🔍</button>
+</div>
+
+<div>Account</div>
+<div>Cart</div>
+</div>
+
+<div class="hero">
+<img id="heroImg" src="${images[0]}">
+<div class="heroText">${heroText}</div>
+</div>
+
+${sectionsHTML}
+
+</div>
+`;
+
+preview.innerHTML=html;
+
+htmlCode.value=html;
+cssCode.value="/* CSS Generated */";
+jsCode.value="// JS Generated";
+
+}
+
+let colsEl=cols;
+let navBgEl=navBg;
+let navTextEl=navText;
+let searchTextEl=searchText;
+let btnColorEl=btnColor;
+let heroTextEl=heroText;
+let cardBgEl=cardBg;
+
+let preview=document.getElementById("preview");
+let htmlCode=document.getElementById("htmlCode");
+let cssCode=document.getElementById("cssCode");
+let jsCode=document.getElementById("jsCode");
+
+document.querySelectorAll("input").forEach(el=>{
+el.addEventListener("input",update);
+});
+
+renderSectionControls();
+update();
+
+</script>
+
+</body>
+</html>
